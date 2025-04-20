@@ -1,4 +1,4 @@
--- Membuat tabel promo_code
+-- Create promo_code table
 CREATE TABLE promo_code (
     promo_id SERIAL PRIMARY KEY,
     promo_name VARCHAR(255),
@@ -7,20 +7,19 @@ CREATE TABLE promo_code (
     duration INT
 );
 
--- Mengimpor data dari file CSV ke dalam tabel promo_code
+-- Import data from CSV file into promo_code table
 COPY promo_code FROM 'C:\Task\promo_code.csv' DELIMITER ',' CSV HEADER;
 
--- Menampilkan seluruh data dari tabel promo_code
+-- Display all data from promo_code table
 SELECT * FROM promo_code;
 
--- Gabung promo_code ke sales_table
+-- Join promo_code to sales_table
 SELECT a.*, b.*
 FROM sales_table a
 JOIN promo_code b ON a.promo_id = b.promo_id
 ORDER BY a.purchase_date ASC;
 
-
--- Tampilkan tanggal pembelian dengan potongan harga promo (jika ada)
+-- Show purchase date with promo discount (if available)
 SELECT 
     a.purchase_date, 
     a.quantity, 
@@ -32,8 +31,7 @@ LEFT JOIN marketplace_table b ON a.item_id = b.item_id
 LEFT JOIN promo_code c ON a.promo_id = c.promo_id
 ORDER BY a.purchase_date ASC;
 
-
--- Hitung total penjualan setelah promo
+-- Calculate total sales after applying promo
 SELECT
     s.sales_id,
     s.item_id,
@@ -48,8 +46,7 @@ JOIN marketplace_table m ON s.item_id = m.item_id
 JOIN promo_code p ON s.promo_id = p.promo_id
 ORDER BY s.purchase_date ASC;
 
-
--- Hitung total harga sebelum promo
+-- Calculate total price before applying promo
 SELECT
     s.sales_id,
     s.item_id,
